@@ -66,7 +66,7 @@ class ApiServices {
   static getSallLoginScreen = async (): Promise<any> => {
     try {
       window.location.replace(
-        "https://accounts.salla.sa/oauth2/auth?client_id=31f652a5-7736-4ba9-990e-f9243f8685fa&response_type=code&redirect_uri=http://localhost:3000/settings&scope=offline_access&state=12345678"
+        "https://accounts.salla.sa/oauth2/auth?client_id=31f652a5-7736-4ba9-990e-f9243f8685fa&response_type=code&redirect_uri=https://chrome-extension-frontend.vercel.app/settings&scope=offline_access&state=12345678"
       );
     } catch (error) {
       // Handle errors

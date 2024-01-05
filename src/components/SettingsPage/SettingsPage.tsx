@@ -189,7 +189,6 @@ const SettingsPage = () => {
         // Check if result is defined before storing in localStorage
         if (result !== undefined) {
           Utils.setItem(enums.SALLA_TOKEN, result);
-          // window.location.replace("/dashboard");
         } else {
           Utils.showErrorMessage("Token retrieval failed.");
         }
@@ -197,6 +196,7 @@ const SettingsPage = () => {
         Utils.showErrorMessage(ex.message);
       } finally {
         setPageLoading(false);
+        window.location.reload();
       }
     };
 

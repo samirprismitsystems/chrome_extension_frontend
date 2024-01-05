@@ -60,6 +60,7 @@ const DashboardPage = () => {
         Utils.showErrorMessage(ex.message);
       } finally {
         setIsLoading(false);
+        window.location.reload();
       }
     };
 

@@ -177,7 +177,7 @@ const SettingsPage = () => {
   }, []);
 
 
-  const url = new URL(window.location.href);
+    const url = new URL(window.location.href);
   const token = url.searchParams.get("code");
 
   useEffect(() => {
@@ -207,7 +207,6 @@ const SettingsPage = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
-
 
 
   if (pageLoading) return <PageLoading />

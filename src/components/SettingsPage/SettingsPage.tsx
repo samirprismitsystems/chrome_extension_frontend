@@ -196,8 +196,8 @@ const SettingsPage = () => {
         Utils.showErrorMessage(ex.message);
       } finally {
         setPageLoading(false);
-        window.location.reload();
       }
+      window.close();
     };
 
     // Check if token is present and local storage does not have SALLA_TOKEN

@@ -48,8 +48,14 @@ const DashboardPage = () => {
       try {
         setIsLoading(true);
         const result = await ApiServices.aliExpressGenerateAccessTokenForNow(token);
-        console.log(result, "------")
+        console.log(result.data, "------")
         // Check if result is defined before storing in localStorage
+
+        if (result && result.data && result.data.data.code == "IncompleteSignature") {
+          Utils.showErrorMessage(result.data.data.message)
+          return null;
+        }
+
         if (result !== undefined) {
           Utils.setItem(enums.ALI_EXPRESS_TOKEN, result);
           // window.location.replace("/dashboard");
@@ -60,7 +66,7 @@ const DashboardPage = () => {
         Utils.showErrorMessage(ex.message);
       } finally {
         setIsLoading(false);
-        window.location.reload();
+        // window.location.reload();
       }
     };
 

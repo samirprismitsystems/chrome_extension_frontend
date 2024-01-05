@@ -39,18 +39,39 @@ const DashboardPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
+  const url = new URL(window.location.href);
+  const token = url.searchParams.get("code");
+
   useEffect(() => {
-    const loadData = async () => {
+    const loadData = async (token: string) => {
       try {
-        const result = await ApiServices.aliExpressGenerateAccessTokenForNow()
-        console.log(result)
+        setIsLoading(true);
+        const result = await ApiServices.aliExpressGenerateAccessTokenForNow(token);
+        console.log(result, "-----result")
+        // Check if result is defined before storing in localStorage
+        if (result !== undefined) {
+          Utils.setItem(enums.ALI_EXPRESS_TOKEN, result);
+          // window.location.replace("/dashboard");
+        } else {
+          Utils.showErrorMessage("Token retrieval failed.");
+        }
       } catch (ex: any) {
-        Utils.showErrorMessage(ex.message)
+        Utils.showErrorMessage(ex.message);
+      } finally {
+        setIsLoading(false);
       }
+    };
+
+    // Check if token is present and local storage does not have .ALI_EXPRESS_TOKEN
+    if (token && !Utils.getItem(enums.ALI_EXPRESS_TOKEN)) {
+      loadData(token);
     }
 
-    loadData();
-  }, [])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token]);
+
+
 
   // adding comments
 

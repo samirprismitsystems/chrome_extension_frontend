@@ -164,9 +164,11 @@ class ApiServices {
   };
 
   // its not usefull its just create for test purpose
-  static aliExpressGenerateAccessTokenForNow = async (): Promise<any> => {
+  static aliExpressGenerateAccessTokenForNow = async (
+    token: string
+  ): Promise<any> => {
     try {
-      const url = `${BACKEND_URI}/auth/getToken`;
+      const url = `${BACKEND_URI}/auth/getToken?code=${token}`;
       const res = await axios.get(url, headerContent());
 
       return res.data;

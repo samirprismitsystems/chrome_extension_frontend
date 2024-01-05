@@ -150,6 +150,17 @@ class ApiServices {
     }
   };
 
+  static sallaAccountAuthorization = async (settingID?: string): Promise<any> => {
+    try {
+      const url = `${BACKEND_URI}auth/salla_account/authorize?settingID=${settingID}`;
+      const res = await axios.get(url, headerContent());
+
+      return res.data.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   // its not usefull its just create for test purpose
   static aliExpressGenerateAccessTokenForNow = async (): Promise<any> => {
     try {

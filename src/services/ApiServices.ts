@@ -152,7 +152,7 @@ class ApiServices {
 
   static sallaAccountAuthorization = async (settingID?: string): Promise<any> => {
     try {
-      const url = `${BACKEND_URI}auth/salla_account/authorize?settingID=${settingID}`;
+      const url = `${BACKEND_URI}/auth/salla_account/authorize?settingID=${settingID}`;
       const res = await axios.get(url, headerContent());
 
       return res.data.data;

@@ -93,7 +93,7 @@ class ApiServices {
         grant_type: "authorization_code",
         code: token,
         scope: "offline_access",
-        redirect_uri: "http://localhost:3000/settings",
+        redirect_uri: "https://chrome-extension-frontend.vercel.app/settings",
       };
 
       let config: any = {
@@ -150,7 +150,9 @@ class ApiServices {
     }
   };
 
-  static sallaAccountAuthorization = async (settingID?: string): Promise<any> => {
+  static sallaAccountAuthorization = async (
+    settingID?: string
+  ): Promise<any> => {
     try {
       const url = `${BACKEND_URI}/auth/salla_account/authorize?settingID=${settingID}`;
       const res = await axios.get(url, headerContent());

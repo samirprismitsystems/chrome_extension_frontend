@@ -183,23 +183,31 @@ const SettingsPage = () => {
   useEffect(() => {
     const loadData = async (token: string) => {
       try {
-        setPageLoading(true)
-        const result = await ApiServices.getSallaAccountToken(token)
-        Utils.setItem(enums.SALLA_TOKEN, result)
-        window.location.replace("/dashboard")
+        setPageLoading(true);
+        const result = await ApiServices.getSallaAccountToken(token);
+        console.log(result, "-----result")
+        // Check if result is defined before storing in localStorage
+        if (result !== undefined) {
+          Utils.setItem(enums.SALLA_TOKEN, result);
+          // window.location.replace("/dashboard");
+        } else {
+          Utils.showErrorMessage("Token retrieval failed.");
+        }
       } catch (ex: any) {
-        Utils.showErrorMessage(ex.message)
+        Utils.showErrorMessage(ex.message);
       } finally {
-        setPageLoading(false)
+        setPageLoading(false);
       }
-    }
+    };
 
-    if (!Utils.getItem(enums.SALLA_TOKEN) && token) {
-      loadData(token)
+    // Check if token is present and local storage does not have SALLA_TOKEN
+    if (token && !Utils.getItem(enums.SALLA_TOKEN)) {
+      loadData(token);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
+  }, [token]);
+
 
 
   if (pageLoading) return <PageLoading />

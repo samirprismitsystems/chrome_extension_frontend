@@ -48,11 +48,10 @@ const DashboardPage = () => {
       try {
         setIsLoading(true);
         const result = await ApiServices.aliExpressGenerateAccessTokenForNow(token);
-        console.log(result.data, "------")
         // Check if result is defined before storing in localStorage
 
-        if (result && result.data && result.data.data.code == "IncompleteSignature") {
-          Utils.showErrorMessage(result.data.data.message)
+        if (result && result.data && result.data.code == "IncompleteSignature") {
+          Utils.showErrorMessage(result.data.message)
           return null;
         }
 

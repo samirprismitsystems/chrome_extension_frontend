@@ -1,5 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -7,6 +8,7 @@ import { enums } from "../../enum";
 import ApiServices from "../../services/ApiServices";
 import Utils from "../../utils/utils";
 import MenuAppBar from "../MenuAppBar/MenuAppBar";
+
 
 const DashboardPage = () => {
   const [isLoading, setIsLoading] = useState(false)
@@ -47,22 +49,50 @@ const DashboardPage = () => {
     const loadData = async (token: string) => {
       try {
         setIsLoading(true);
-        const result = await ApiServices.aliExpressGenerateAccessTokenForNow(token);
-        // Check if result is defined before storing in localStorage
+        const url = "https://api-sg.aliexpress.com/sync";
+        const appKey = "503950"; // Replace with your actual client_id
+        const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
 
-        console.log(result, "----")
+        let param: any = {};
+        param["app_key"] = appKey;
+        param["code"] = token;
+        param["format"] = "json";
+        param["method"] = "/auth/token/create";
+        param["sign_method"] = "md5";
+        param["timestamp"] = Math.floor(Date.now() / 1000);
 
-        if (result && result.data && result.data.code == "IncompleteSignature") {
-          Utils.showErrorMessage(result.data.message)
-          return null;
+        // Sorting the object properties by key
+        const sortedParameters: any = Object.fromEntries(Object.entries(param).sort());
+
+        let parameters = "";
+        for (const [key, value] of Object.entries(sortedParameters)) {
+          if (!parameters) {
+            parameters = `${key}=${value}`;
+          } else {
+            parameters += `&${key}=${encodeURIComponent(value as any)}`;
+          }
         }
 
-        if (result !== undefined) {
-          Utils.setItem(enums.ALI_EXPRESS_TOKEN, result);
-          // window.location.replace("/dashboard");
-        } else {
-          Utils.showErrorMessage("Token retrieval failed.");
-        }
+        let sign = parameters.replace(/&/g, "").replace(/=/g, "");
+        const signString = appSecret + sign + appSecret;
+        const finalSign = await axios.get(
+          `https://prismcodehub.com/aliexpress?md5=${signString}`
+        );
+
+        console.log(finalSign, " finalSign");
+
+        //const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
+        //const finalSign = md5Hash.toUpperCase();
+
+        const finalUrl = `${url}?${new URLSearchParams(sortedParameters)}&sign=${finalSign.data
+          }`;
+
+        const result = await axios.post(finalUrl, new URLSearchParams(param), {
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          },
+        });
+        console.log(result)
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);
       } finally {

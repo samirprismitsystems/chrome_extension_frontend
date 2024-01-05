@@ -48,7 +48,7 @@ const DashboardPage = () => {
       try {
         setIsLoading(true);
         const result = await ApiServices.aliExpressGenerateAccessTokenForNow(token);
-        console.log(result, "-----result")
+        console.log(result, "------")
         // Check if result is defined before storing in localStorage
         if (result !== undefined) {
           Utils.setItem(enums.ALI_EXPRESS_TOKEN, result);

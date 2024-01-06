@@ -85,9 +85,7 @@ const DashboardPage = () => {
         //const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
         //const finalSign = md5Hash.toUpperCase();
 
-        const finalUrl = `${url}?${new URLSearchParams(
-          sortedParameters
-        )}&sign=${finalSign.data}`;
+        const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign.data}`;
 
         // const result = await axios.post(finalUrl, new URLSearchParams(param), {
         //   headers: {
@@ -97,6 +95,8 @@ const DashboardPage = () => {
 
         // add comment
 
+        console.log(finalUrl, "----------main URL");
+
         const result = await fetch(finalUrl, {
           method: "POST",
           headers: {
@@ -104,8 +104,6 @@ const DashboardPage = () => {
           },
           body: new URLSearchParams(param).toString(),
         });
-
-        console.log(result.json(), "----------main result");
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);
       } finally {

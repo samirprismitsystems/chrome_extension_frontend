@@ -9,27 +9,27 @@ import ApiServices from "../../services/ApiServices";
 import Utils from "../../utils/utils";
 import MenuAppBar from "../MenuAppBar/MenuAppBar";
 
-
+// add comment
 const DashboardPage = () => {
-  const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
   const { user } = useAuth0();
 
   const loadData = async () => {
     try {
       if (user) {
-        setIsLoading(true)
+        setIsLoading(true);
         const result = await ApiServices.userLogin(user);
         if (result.isError) {
-          Utils.setItem(enums.IS_LOGIN, false)
-          throw new Error(result.message)
+          Utils.setItem(enums.IS_LOGIN, false);
+          throw new Error(result.message);
         }
 
-        Utils.setItem(enums.IS_LOGIN, true)
+        Utils.setItem(enums.IS_LOGIN, true);
       }
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -40,7 +40,6 @@ const DashboardPage = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
 
   const url = new URL(window.location.href);
   const token = url.searchParams.get("code");
@@ -62,7 +61,9 @@ const DashboardPage = () => {
         param["timestamp"] = Math.floor(Date.now() / 1000);
 
         // Sorting the object properties by key
-        const sortedParameters: any = Object.fromEntries(Object.entries(param).sort());
+        const sortedParameters: any = Object.fromEntries(
+          Object.entries(param).sort()
+        );
 
         let parameters = "";
         for (const [key, value] of Object.entries(sortedParameters)) {
@@ -84,15 +85,25 @@ const DashboardPage = () => {
         //const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
         //const finalSign = md5Hash.toUpperCase();
 
-        const finalUrl = `${url}?${new URLSearchParams(sortedParameters)}&sign=${finalSign.data
-          }`;
+        const finalUrl = `${url}?${new URLSearchParams(
+          sortedParameters
+        )}&sign=${finalSign.data}`;
 
-        const result = await axios.post(finalUrl, new URLSearchParams(param), {
+        // const result = await axios.post(finalUrl, new URLSearchParams(param), {
+        //   headers: {
+        //     "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        //   },
+        // });
+
+        const result = await fetch(finalUrl, {
+          method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
           },
+          body: new URLSearchParams(param).toString(),
         });
-        console.log(result)
+
+        console.log(result.json(), "----------main result");
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);
       } finally {
@@ -109,11 +120,9 @@ const DashboardPage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
 
-
-
   // adding comments
 
-  if (isLoading) return <PageLoading />
+  if (isLoading) return <PageLoading />;
   return (
     <AuthGuard>
       <MenuAppBar>

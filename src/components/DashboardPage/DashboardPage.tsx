@@ -103,7 +103,8 @@ const DashboardPage = () => {
           body: new URLSearchParams(param).toString(),
         });
 
-        console.log(result.data, "----------main Dtata");
+
+        // console.log(result.data, "----------main Dtata");
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);
       } finally {

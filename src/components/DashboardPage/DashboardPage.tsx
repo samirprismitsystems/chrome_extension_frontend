@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
 import axios from "axios";
+import * as crypto from "crypto";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -76,14 +77,14 @@ const DashboardPage = () => {
 
         let sign = parameters.replace(/&/g, "").replace(/=/g, "");
         const signString = appSecret + sign + appSecret;
-        // const finalSign = await axios.get(
-        //   `https://prismcodehub.com/aliexpress?md5=${signString}`
-        // );
+        const finalSign = await axios.get(
+          `https://prismcodehub.com/aliexpress?md5=${signString}`
+        );
 
         // console.log(finalSign, " finalSign");
 
-        const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
-        const finalSign = md5Hash.toUpperCase();
+        // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
+        // const finalSign = md5Hash.toUpperCase();
 
         const finalUrl = `https://api-sg.aliexpress.com/sync?${param}&sign=${finalSign.data}`;
 

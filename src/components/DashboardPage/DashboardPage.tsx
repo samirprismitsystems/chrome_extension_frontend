@@ -76,14 +76,14 @@ const DashboardPage = () => {
 
         let sign = parameters.replace(/&/g, "").replace(/=/g, "");
         const signString = appSecret + sign + appSecret;
-        const finalSign = await axios.get(
-          `https://prismcodehub.com/aliexpress?md5=${signString}`
-        );
+        // const finalSign = await axios.get(
+        //   `https://prismcodehub.com/aliexpress?md5=${signString}`
+        // );
 
-        console.log(finalSign, " finalSign");
+        // console.log(finalSign, " finalSign");
 
-        //const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
-        //const finalSign = md5Hash.toUpperCase();
+        const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
+        const finalSign = md5Hash.toUpperCase();
 
         const finalUrl = `https://api-sg.aliexpress.com/sync?${param}&sign=${finalSign.data}`;
 
@@ -103,6 +103,7 @@ const DashboardPage = () => {
           body: new URLSearchParams(param).toString(),
         });
 
+        
 
         // console.log(result.data, "----------main Dtata");
       } catch (ex: any) {

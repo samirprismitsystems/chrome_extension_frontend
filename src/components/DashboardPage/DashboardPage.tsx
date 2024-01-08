@@ -86,9 +86,9 @@ const DashboardPage = () => {
           const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
           const finalSign = sha256Hash.toUpperCase()
 
-          const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign}`;
+          const finalUrl = `https://api-sg.aliexpress.com/sync?${JSON.stringify(sortedParameters)}&sign=${finalSign}`;
 
-          const result = axios.post(finalUrl, param, {
+          axios.post(finalUrl, param, {
             headers: {
               "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
             },

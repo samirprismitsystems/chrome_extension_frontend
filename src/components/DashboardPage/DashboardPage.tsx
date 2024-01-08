@@ -88,7 +88,7 @@ const DashboardPage = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         },
-        body: new URLSearchParams(param),
+        body: JSON.stringify(param),
       });
 
       const result = await response.json();

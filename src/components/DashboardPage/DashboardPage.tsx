@@ -1,7 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import * as crypto from "crypto";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -86,7 +85,7 @@ const DashboardPage = () => {
         // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
         // const finalSign = md5Hash.toUpperCase();
 
-        const finalUrl = `https://api-sg.aliexpress.com/sync?${param}&sign=${finalSign.data}`;
+        const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign.data}`;
 
         // const result = await axios.post(finalUrl, new URLSearchParams(param), {
         //   headers: {
@@ -100,11 +99,13 @@ const DashboardPage = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            "Credentials": "true"
+            
           },
           body: new URLSearchParams(param).toString(),
         });
 
-        
+
 
         // console.log(result.data, "----------main Dtata");
       } catch (ex: any) {

@@ -76,7 +76,7 @@ export default function SidePanel(props: ISidePanelProps) {
                 return null;
             }
 
-            // Utils.showErrorMessage('Not able to show the ali express login!')
+            Utils.showErrorMessage('Not able to show the ali express login!')
         } catch (ex: any) {
             Utils.showErrorMessage(ex.message)
         }

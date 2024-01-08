@@ -57,7 +57,7 @@ const DashboardPage = () => {
         code: token,
         format: "json",
         method: '/auth/token/create',
-        sign_method: "md5",
+        sign_method: "sha256",
         timestamp: Math.floor(Date.now() / 1000),
       };
 
@@ -90,8 +90,9 @@ const DashboardPage = () => {
 
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       // const finalSign = md5Hash.toUpperCase();
+      
 
-      const finalUrl = `https://api-sg.aliexpress.com/sync?app_signature=${finalSign.data}&${parameters}&sign=${finalSign.data}`;
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
 
       const response = await fetch(finalUrl, {
         method: 'POST',

@@ -115,7 +115,7 @@ const DashboardPage = () => {
         });
 
 
-      const result = a;
+      const result = await a;
       console.log(result, "----------main Data");
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);

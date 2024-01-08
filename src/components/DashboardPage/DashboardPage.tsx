@@ -102,6 +102,7 @@ const DashboardPage = () => {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         data: param,
+        http2: false
       };
 
       const a = axios

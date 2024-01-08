@@ -95,9 +95,7 @@ const DashboardPage = () => {
 
         // add comment
 
-        const result = await axios.post(finalUrl, param, {
-          withCredentials: true,
-        })
+        const result = await axios.post(finalUrl, param)
 
 
         console.log(result, "----------main Dtata");

@@ -81,8 +81,8 @@ const DashboardPage = () => {
 
         console.log(finalSign, " finalSign");
 
-        //const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
-        //const finalSign = md5Hash.toUpperCase();
+        // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
+        // const finalSign = md5Hash.toUpperCase();
 
         const finalUrl = `${url}?${new URLSearchParams(sortedParameters)}&sign=${finalSign.data
           }`;

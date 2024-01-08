@@ -56,7 +56,7 @@ const DashboardPage = () => {
         app_key: appKey,
         code: token,
         format: "json",
-        method: new URLSearchParams('/auth/token/create'),
+        method: JSON.stringify('/auth/token/create'),
         sign_method: "md5",
         timestamp: Math.floor(Date.now() / 1000),
       };

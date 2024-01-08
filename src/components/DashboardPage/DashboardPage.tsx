@@ -1,7 +1,6 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
 import axios from "axios";
-import http from "http";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -96,11 +95,8 @@ const DashboardPage = () => {
 
         // add comment
 
-        const agent = new http.Agent({ keepAlive: true });
-
         const result = await axios.post(finalUrl, { param }, {
-          httpAgent: agent,
-          httpsAgent: agent
+          withCredentials:true,
         })
 
 

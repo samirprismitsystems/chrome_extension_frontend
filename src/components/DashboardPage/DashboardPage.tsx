@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
 import axios from "axios";
+import http from "http";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -95,19 +96,15 @@ const DashboardPage = () => {
 
         // add comment
 
-        const result = await fetch(finalUrl, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            "Credentials": "true"
-            
-          },
-          body: new URLSearchParams(param).toString(),
-        });
+        const agent = new http.Agent({ keepAlive: true });
+
+        const result = await axios.post(finalUrl, { param }, {
+          httpAgent: agent,
+          httpsAgent: agent
+        })
 
 
-
-        // console.log(result.data, "----------main Dtata");
+        console.log(result, "----------main Dtata");
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);
       } finally {

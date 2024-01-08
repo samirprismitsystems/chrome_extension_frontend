@@ -57,7 +57,7 @@ const DashboardPage = () => {
         param["code"] = token;
         param["format"] = "json";
         param["method"] = "/auth/token/create";
-        param["sign_method"] = "md5";
+        param["sign_method"] = "sha256";
         param["timestamp"] = Math.floor(Date.now() / 1000);
 
         // Sorting the object properties by key
@@ -77,7 +77,7 @@ const DashboardPage = () => {
         let sign = parameters.replace(/&/g, "").replace(/=/g, "");
         const signString = appSecret + sign + appSecret;
         const finalSign = await axios.get(
-          `https://prismcodehub.com/aliexpress?md5=${signString}`
+          `https://prismcodehub.com/aliexpress?sha256=${signString}`
         );
 
         // console.log(finalSign, " finalSign");

@@ -77,21 +77,21 @@ const DashboardPage = () => {
 
       const crypto = window.crypto; // Handle browser compatibility
 
-      // const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-      // const hashArray = Array.from(new Uint8Array(hashBuffer));
-      // const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-      // const finalSign = sha256Hash.toUpperCase();
+      const hashBuffer = await crypto.subtle.digest('sha256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+      const finalSign = sha256Hash.toUpperCase();
 
-      const finalSign = await axios.get(
-        `https://prismcodehub.com/aliexpress?md5=${signString}`
-      );
+      // const finalSign = await axios.get(
+      //   `https://prismcodehub.com/aliexpress?md5=${signString}`
+      // );
 
       // console.log(finalSign, " finalSign");
 
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       // const finalSign = md5Hash.toUpperCase();
 
-      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign}`;
 
       const response = await fetch(finalUrl, {
         method: 'POST',

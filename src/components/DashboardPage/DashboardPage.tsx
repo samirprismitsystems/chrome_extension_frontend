@@ -56,7 +56,7 @@ const DashboardPage = () => {
         app_key: appKey,
         code: token,
         format: "json",
-        method: "/auth/token/create",
+        method: new URLSearchParams('/auth/token/create'),
         sign_method: "md5",
         timestamp: Math.floor(Date.now() / 1000),
       };
@@ -91,7 +91,7 @@ const DashboardPage = () => {
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       // const finalSign = md5Hash.toUpperCase();
 
-      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign}`;
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${new URLSearchParams(parameters)}&sign=${finalSign}`;
 
       const response = await fetch(finalUrl, {
         method: 'POST',

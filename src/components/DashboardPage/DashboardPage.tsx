@@ -95,7 +95,7 @@ const DashboardPage = () => {
 
         // add comment
 
-        const result = await axios.post(finalUrl, { param }, {
+        const result = await axios.post(finalUrl, {
           withCredentials: true,
         })
 

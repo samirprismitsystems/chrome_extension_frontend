@@ -90,20 +90,31 @@ const DashboardPage = () => {
 
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       // const finalSign = md5Hash.toUpperCase();
-      
+
 
       const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
 
-      const response = await fetch(finalUrl, {
-        method: 'POST',
+      let config: any = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: finalUrl,
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          "Content-Type": "application/x-www-form-urlencoded",
         },
-        body: new URLSearchParams(param),
-      });
+        data: param,
+      };
+
+      const a = axios
+        .request(config)
+        .then((response) => {
+          return response.data;
+        })
+        .catch((error: any) => {
+          Utils.showErrorMessage(error.message);
+        });
 
 
-      const result = await response.json();
+      const result = a;
       console.log(result, "----------main Data");
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);

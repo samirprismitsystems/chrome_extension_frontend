@@ -61,9 +61,7 @@ const DashboardPage = () => {
         param["timestamp"] = Math.floor(Date.now() / 1000);
 
         // Sorting the object properties by key
-        const sortedParameters: any = Object.fromEntries(
-          Object.entries(param).sort()
-        );
+        const sortedParameters = Object.fromEntries(Object.entries(param).sort());
 
         let parameters = "";
         for (const [key, value] of Object.entries(sortedParameters)) {
@@ -76,29 +74,28 @@ const DashboardPage = () => {
 
         let sign = parameters.replace(/&/g, "").replace(/=/g, "");
         const signString = appSecret + sign + appSecret;
-        const finalSign = await axios.get(
-          `https://prismcodehub.com/aliexpress?sha256=${signString}`
-        );
 
-        // console.log(finalSign, " finalSign");
+        // Create SHA256 hash
+        const encoder = new TextEncoder();
+        const data = encoder.encode(signString);
 
-        // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
-        // const finalSign = md5Hash.toUpperCase();
+        const crypto = window.crypto; // Handle browser compatibility
 
-        const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign.data}`;
+        crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+          const finalSign = sha256Hash.toUpperCase()
 
-        // const result = await axios.post(finalUrl, new URLSearchParams(param), {
-        //   headers: {
-        //     "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-        //   },
-        // });
+          const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign}`;
 
-        // add comment
-
-        const result = await axios.post(finalUrl, param)
-
-
-        console.log(result, "----------main Dtata");
+          const result = axios.post(finalUrl, param, {
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+            },
+          }).then((data) => {
+            console.log(data.data, "----------------------")
+          });
+        });
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);
       } finally {

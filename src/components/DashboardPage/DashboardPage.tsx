@@ -1,6 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -88,13 +87,14 @@ const DashboardPage = () => {
 
           const finalUrl = `https://api-sg.aliexpress.com/sync?${JSON.stringify(sortedParameters)}&sign=${finalSign}`;
 
-          axios.post(finalUrl, param, {
+          const result = fetch(finalUrl, {
+            body: param,
             headers: {
               "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
             },
-          }).then((data) => {
-            console.log(data.data, "----------------------")
           });
+
+          console.log(result)
         });
       } catch (ex: any) {
         Utils.showErrorMessage(ex.message);

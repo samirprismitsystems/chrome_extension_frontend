@@ -67,7 +67,7 @@ const DashboardPage = () => {
         .map(([key, value]) => `${key}=${encodeURIComponent(value as any)}`)
         .join('&');
 
-        
+
       const sign = parameters.replace(/&/g, "").replace(/=/g, "");
       const signString = appSecret + sign + appSecret;
 
@@ -91,7 +91,7 @@ const DashboardPage = () => {
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       // const finalSign = md5Hash.toUpperCase();
 
-      const finalUrl = `https://api-sg.aliexpress.com/sync?${new URLSearchParams(parameters)}&sign=${finalSign}`;
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
 
       const response = await fetch(finalUrl, {
         method: 'POST',

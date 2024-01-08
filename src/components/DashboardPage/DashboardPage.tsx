@@ -56,18 +56,18 @@ const DashboardPage = () => {
         app_key: appKey,
         code: token,
         format: "json",
-        method: JSON.stringify('/auth/token/create'),
+        method: '/auth/token/create',
         sign_method: "md5",
         timestamp: Math.floor(Date.now() / 1000),
       };
 
       // Sorting the object properties by key
       const sortedParameters = Object.fromEntries(Object.entries(param).sort());
-
       const parameters = Object.entries(sortedParameters)
         .map(([key, value]) => `${key}=${encodeURIComponent(value as any)}`)
         .join('&');
 
+        
       const sign = parameters.replace(/&/g, "").replace(/=/g, "");
       const signString = appSecret + sign + appSecret;
 

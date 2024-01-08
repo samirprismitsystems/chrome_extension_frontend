@@ -43,70 +43,68 @@ const DashboardPage = () => {
   const url = new URL(window.location.href);
   const token = url.searchParams.get("code");
 
+  const getAccessToken = async (token: string) => {
+    try {
+      setIsLoading(true);
+
+      const url = "https://api-sg.aliexpress.com/sync";
+      const appKey = "503950"; // Replace with your actual client_id
+      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
+
+      const param: any = {
+        app_key: appKey,
+        code: token,
+        format: "json",
+        method: "/auth/token/create",
+        sign_method: "sha256",
+        timestamp: Math.floor(Date.now() / 1000),
+      };
+
+      // Sorting the object properties by key
+      const sortedParameters = Object.fromEntries(Object.entries(param).sort());
+
+      const parameters = Object.entries(sortedParameters)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value as any)}`)
+        .join('&');
+
+      const sign = parameters.replace(/&/g, "").replace(/=/g, "");
+      const signString = appSecret + sign + appSecret;
+
+      // Create SHA256 hash
+      const encoder = new TextEncoder();
+      const data = encoder.encode(signString);
+
+      const crypto = window.crypto; // Handle browser compatibility
+
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+      const finalSign = sha256Hash.toUpperCase();
+
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign}`;
+
+      const response = await fetch(finalUrl, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+        },
+        body: new URLSearchParams(param),
+      });
+
+      const result = await response.json();
+      console.log(result, "----------main Data");
+    } catch (ex: any) {
+      Utils.showErrorMessage(ex.message);
+    } finally {
+      setIsLoading(false);
+      // window.location.reload();
+    }
+  };
+
+
   useEffect(() => {
-    const loadData = async (token: string) => {
-      try {
-        setIsLoading(true);
-        const url = "https://api-sg.aliexpress.com/sync";
-        const appKey = "503950"; // Replace with your actual client_id
-        const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
-
-        let param: any = {};
-        param["app_key"] = appKey;
-        param["code"] = token;
-        param["format"] = "json";
-        param["method"] = "/auth/token/create";
-        param["sign_method"] = "sha256";
-        param["timestamp"] = Math.floor(Date.now() / 1000);
-
-        // Sorting the object properties by key
-        const sortedParameters = Object.fromEntries(Object.entries(param).sort());
-
-        let parameters = "";
-        for (const [key, value] of Object.entries(sortedParameters)) {
-          if (!parameters) {
-            parameters = `${key}=${value}`;
-          } else {
-            parameters += `&${key}=${encodeURIComponent(value as any)}`;
-          }
-        }
-
-        let sign = parameters.replace(/&/g, "").replace(/=/g, "");
-        const signString = appSecret + sign + appSecret;
-
-        // Create SHA256 hash
-        const encoder = new TextEncoder();
-        const data = encoder.encode(signString);
-
-        const crypto = window.crypto; // Handle browser compatibility
-
-        crypto.subtle.digest('SHA-256', data).then(hashBuffer => {
-          const hashArray = Array.from(new Uint8Array(hashBuffer));
-          const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-          const finalSign = sha256Hash.toUpperCase()
-
-          const finalUrl = `https://api-sg.aliexpress.com/sync?${JSON.stringify(sortedParameters)}&sign=${finalSign}`;
-
-          const result = fetch(finalUrl, {
-            body: param,
-            headers: {
-              "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-            },
-          });
-
-          console.log(result)
-        });
-      } catch (ex: any) {
-        Utils.showErrorMessage(ex.message);
-      } finally {
-        setIsLoading(false);
-        // window.location.reload();
-      }
-    };
-
-    // Check if token is present and local storage does not have .ALI_EXPRESS_TOKEN
     if (token && !Utils.getItem(enums.ALI_EXPRESS_TOKEN)) {
-      loadData(token);
+      getAccessToken(token);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

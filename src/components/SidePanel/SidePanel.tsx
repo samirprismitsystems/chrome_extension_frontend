@@ -69,13 +69,13 @@ export default function SidePanel(props: ISidePanelProps) {
                 Utils.showSuccessMessage('Ali express account verified already!')
                 return null;
             }
-            const data = await ApiServices.aliExpressAuthorization(user?.sub);
-            if (data && data.link) {
-                window.open(data.link, "_self")
-                return null;
-            }
+            // const data = await ApiServices.aliExpressAuthorization(user?.sub);
+            // if (data && data.link) {
+            window.open("https://prismcodehub.com/aliexpress?login=12312", "_blank")
+            // return null;
+            // }
 
-            Utils.showErrorMessage('Not able to show the ali express login!')
+            // Utils.showErrorMessage('Not able to show the ali express login!')
         } catch (ex: any) {
             Utils.showErrorMessage(ex.message)
         }

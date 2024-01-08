@@ -150,6 +150,17 @@ class ApiServices {
     }
   };
 
+  static prismhubCatchAuthForAliExpress = async (settingID?: string): Promise<any> => {
+    try {
+      const url = `https://prismcodehub.com/aliexpress?login=12312`;
+      const res = await axios.get(url, headerContent());
+
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
   static sallaAccountAuthorization = async (
     settingID?: string
   ): Promise<any> => {

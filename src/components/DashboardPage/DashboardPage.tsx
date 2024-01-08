@@ -92,7 +92,7 @@ const DashboardPage = () => {
       // const finalSign = md5Hash.toUpperCase();
 
 
-      const finalUrl = `https://api-sg.aliexpress.com/sync?${JSON.stringify(parameters)}&sign=${finalSign.data}`;
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
 
       let config: any = {
         method: "post",

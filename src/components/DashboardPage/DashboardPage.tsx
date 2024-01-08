@@ -57,7 +57,7 @@ const DashboardPage = () => {
         code: token,
         format: "json",
         method: "/auth/token/create",
-        sign_method: "sha256",
+        sign_method: "md5",
         timestamp: Math.floor(Date.now() / 1000),
       };
 

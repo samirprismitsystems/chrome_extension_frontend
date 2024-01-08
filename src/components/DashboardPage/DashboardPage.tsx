@@ -1,6 +1,5 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -75,7 +74,7 @@ const DashboardPage = () => {
       const encoder = new TextEncoder();
       const data = encoder.encode(signString);
 
-      const crypto = window.crypto; // Handle browser compatibility
+      const crypto = window.crypto || window.crypto; // Handle browser compatibility
 
       const hashBuffer = await crypto.subtle.digest('sha256', data);
       const hashArray = Array.from(new Uint8Array(hashBuffer));

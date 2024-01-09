@@ -84,7 +84,7 @@ const DashboardPage = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        // data: param,
+        data: param,
       };
 
       const response = await axios.request(config);

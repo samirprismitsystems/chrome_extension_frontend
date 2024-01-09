@@ -50,7 +50,7 @@ const DashboardPage = () => {
 
       const url = "https://api-sg.aliexpress.com/sync";
       const appKey = "503950";
-      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; 
+      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
 
       const param: any = {
         app_key: appKey,
@@ -100,6 +100,7 @@ const DashboardPage = () => {
         method: "post",
         maxBodyLength: Infinity,
         url: finalUrl,
+        http2: false,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },

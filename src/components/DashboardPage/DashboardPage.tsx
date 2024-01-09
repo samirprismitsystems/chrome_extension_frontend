@@ -49,8 +49,8 @@ const DashboardPage = () => {
       setIsLoading(true);
 
       const url = "https://api-sg.aliexpress.com/sync";
-      const appKey = "503950"; // Replace with your actual client_id
-      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
+      const appKey = "503950";
+      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; 
 
       const param: any = {
         app_key: appKey,
@@ -93,6 +93,8 @@ const DashboardPage = () => {
 
 
       const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
+
+      console.log(finalUrl, "finalUrl")
 
       let config: any = {
         method: "post",

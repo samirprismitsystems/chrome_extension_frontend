@@ -56,7 +56,7 @@ const DashboardPage = () => {
         code: token,
         format: "json",
         method: '/auth/token/create',
-        sign_method: "sha256",
+        sign_method: "md5",
         timestamp: Date.now(),
       };
 
@@ -65,8 +65,9 @@ const DashboardPage = () => {
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
         .join('&');
 
+
       const signString = Object.keys(sortedParameters)
-        .map(key => `${key}${sortedParameters[key]}`)
+        .map(key => `${key}=${encodeURIComponent(sortedParameters[key])}`)
         .join('');
 
       const finalSign = await axios.get(
@@ -75,6 +76,7 @@ const DashboardPage = () => {
 
       const finalUrl = `${apiUrl}?${parameters}&sign=${finalSign.data}`;
 
+      console.log("finalUrl", finalUrl)
       let config = {
         method: "post",
         maxBodyLength: Infinity,

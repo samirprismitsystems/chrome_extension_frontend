@@ -47,7 +47,6 @@ const DashboardPage = () => {
   const getAccessToken = async (token: string) => {
     try {
       setIsLoading(true);
-
       const apiUrl = "https://api-sg.aliexpress.com/sync";
       const appKey = "503950";
       const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
@@ -61,7 +60,6 @@ const DashboardPage = () => {
         timestamp: Date.now(),
       };
 
-      // Sorting the object properties by key
       const sortedParameters = Object.fromEntries(Object.entries(param).sort());
       const parameters = Object.entries(sortedParameters)
         .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
@@ -87,9 +85,7 @@ const DashboardPage = () => {
         data: param,
       };
 
-      const response = await axios.request(config);
-      const result = response.data;
-      console.log(result, "----------main Data");
+      await axios.request(config);
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {
@@ -111,23 +107,7 @@ const DashboardPage = () => {
     <AuthGuard>
       <MenuAppBar>
         <Typography variant="body1">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. A ratione quo
-          repudiandae, eum qui necessitatibus omnis recusandae enim quibusdam
-          nobis placeat accusamus vitae laudantium pariatur praesentium sunt
-          quos corporis? Eos iure quasi debitis, voluptates ea, nulla illum ut
-          quidem labore culpa accusamus tenetur aperiam facilis sed quia dolores
-          velit! Fugiat, inventore vitae dolores illum consequatur tenetur nisi
-          nostrum sunt at, ipsa asperiores architecto necessitatibus! Dolores
-          dolore ratione dolorem natus iusto ullam velit. Saepe alias natus
-          magni molestias rerum, fugit repudiandae necessitatibus iusto ut ipsam
-          possimus at consequatur nesciunt tempora esse cum dolor similique
-          ullam impedit dolore nam fuga, placeat excepturi? Amet esse asperiores
-          totam alias vero illum ipsum accusantium, numquam nam obcaecati
-          quaerat debitis odio, ullam quo officiis eius dolorem tenetur! Itaque
-          soluta, sequi totam dignissimos tempora eos perferendis numquam
-          repellat incidunt nobis iste id veniam quibusdam ipsam officia sed
-          dolores quaerat ipsa fugiat quo, minus eveniet. Vero, animi
-          perferendis?
+          <h2>Main Dashboard</h2>
         </Typography>
       </MenuAppBar>
     </AuthGuard>

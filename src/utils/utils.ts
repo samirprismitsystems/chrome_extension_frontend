@@ -17,6 +17,16 @@ class Utils {
     return info;
   }
 
+  static getAliExpressTokenInfo() {
+    const info = JSON.parse(localStorage.getItem(enums.ALI_EXPRESS_TOKEN) || "{}");
+
+    if (typeof info === "object" && Object.keys(info).length <= 0) {
+      return null;
+    }
+
+    return info["/auth/token/create_response"];
+  }
+
   static removeItem(key: string) {
     localStorage.removeItem(key);
   }

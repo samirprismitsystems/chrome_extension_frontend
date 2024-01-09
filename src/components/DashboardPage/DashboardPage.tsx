@@ -121,6 +121,8 @@ const DashboardPage = () => {
     }
   };
 
+  console.log(Utils.getAliExpressTokenInfo(), "----")
+
   useEffect(() => {
     if (token && !Utils.getItem(enums.ALI_EXPRESS_TOKEN)) {
       getAccessToken(token);

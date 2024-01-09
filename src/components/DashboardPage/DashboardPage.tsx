@@ -86,8 +86,12 @@ const DashboardPage = () => {
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       const md5Hash = md5(signString).toUpperCase();
       const finalSign = md5Hash.toUpperCase();
-
       const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign}`;
+
+      console.log("finalURI", finalUrl)
+      console.log("finalSign", finalSign)
+      console.log("sortedParameters", sortedParameters)
+
 
       await axios.get(finalUrl, {
         headers: {

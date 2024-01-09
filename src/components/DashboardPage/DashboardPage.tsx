@@ -69,11 +69,11 @@ const DashboardPage = () => {
         .map(key => `${key}${sortedParameters[key]}`)
         .join('');
 
-      // const finalSign = await axios.get(
-      //   `https://prismcodehub.com/aliexpress?md5=${signString}`
-      // );
+      const finalSign = await axios.get(
+        `https://prismcodehub.com/aliexpress?md5=${signString}`
+      );
 
-      const finalUrl = `${apiUrl}?${parameters}&sign=${signString}`;
+      const finalUrl = `${apiUrl}?${parameters}&sign=${finalSign.data}`;
 
       let config = {
         method: "post",

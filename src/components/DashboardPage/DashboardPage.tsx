@@ -48,7 +48,7 @@ const DashboardPage = () => {
   const getAccessToken = async (token: string) => {
     try {
       setIsLoading(true);
-      const url = "https://api-sg.aliexpress.com/sync";
+      const mainURI = "https://api-sg.aliexpress.com/sync";
       const appKey = "503950"; // Replace with your actual client_id
       const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
 
@@ -68,7 +68,7 @@ const DashboardPage = () => {
       const parameters = Object.entries(sortedParameters)
         .map(([key, value]) => {
           if (key === 'method') {
-            return `${key}=${value}`; // Don't URL encode the 'method' parameter
+            return `${key}=${value}`;
           } else {
             return `${key}=${encodeURIComponent(value as any)}`;
           }
@@ -87,19 +87,18 @@ const DashboardPage = () => {
       // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       const md5Hash = md5(signString).toUpperCase();
       const finalSign = md5Hash.toUpperCase();
-      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign}`;
-
-      console.log("finalURI", finalUrl)
-      console.log("finalSign", finalSign)
-      console.log("sortedParameters", parameters)
-
+      const finalUrl = `${mainURI}?${parameters}&sign=${finalSign}`;
 
       await axios.get(finalUrl, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         },
-      }).then((data) => {
-        console.log("data", data)
+      }).then((result: any) => {
+        Utils.setItem(enums.ALI_EXPRESS_TOKEN, result.data)
+      }).catch((error) => {
+        Utils.showErrorMessage(error.message)
+      }).finally(() => {
+        window.close();
       });
 
       // add comment

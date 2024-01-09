@@ -71,8 +71,7 @@ export default function SidePanel(props: ISidePanelProps) {
             }
             const data = await ApiServices.aliExpressAuthorization(user?.sub);
             if (data && data.link) {
-                // window.open("https://prismcodehub.com/aliexpress?login=12312", "_self")
-                window.open(data.link, "_self")
+                window.open(data.link, "_blank")
                 return null;
             }
 

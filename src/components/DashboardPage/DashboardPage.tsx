@@ -77,8 +77,6 @@ const DashboardPage = () => {
 
       const finalUrl = `${apiUrl}?${parameters}&sign=${finalSign.data}`;
 
-      console.log(finalUrl, "finalUrl");
-
       let config = {
         method: "post",
         maxBodyLength: Infinity,
@@ -86,7 +84,7 @@ const DashboardPage = () => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-        data: param,
+        // data: param,
       };
 
       const response = await axios.request(config);

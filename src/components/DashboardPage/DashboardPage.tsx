@@ -65,14 +65,15 @@ const DashboardPage = () => {
         Object.entries(param).sort()
       );
 
-      let parameters = "";
-      for (const [key, value] of Object.entries(sortedParameters)) {
-        if (!parameters) {
-          parameters = `${key}=${value}`;
-        } else {
-          parameters += `&${key}=${encodeURIComponent(value as any)}`;
-        }
-      }
+      const parameters = Object.entries(sortedParameters)
+        .map(([key, value]) => {
+          if (key === 'method') {
+            return `${key}=${value}`; // Don't URL encode the 'method' parameter
+          } else {
+            return `${key}=${encodeURIComponent(value as any)}`;
+          }
+        })
+        .join('&');
 
       let sign = parameters.replace(/&/g, "").replace(/=/g, "");
       const signString = appSecret + sign + appSecret;

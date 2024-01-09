@@ -1,6 +1,7 @@
 import { useAuth0 } from "@auth0/auth0-react";
 import { Typography } from "@mui/material";
 import axios from "axios";
+import md5 from "md5";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import PageLoading from "../../common/PageLoading";
@@ -47,47 +48,68 @@ const DashboardPage = () => {
   const getAccessToken = async (token: string) => {
     try {
       setIsLoading(true);
-      const apiUrl = "https://api-sg.aliexpress.com/sync";
-      const appKey = "503950";
-      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
+      const url = "https://api-sg.aliexpress.com/sync";
+      const appKey = "503950"; // Replace with your actual client_id
+      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
 
-      const param = {
-        app_key: appKey,
-        code: token,
-        format: "json",
-        method: '/auth/token/create',
-        sign_method: "md5",
-        timestamp: Date.now(),
-      };
+      let param: any = {};
+      param["app_key"] = appKey;
+      param["code"] = token;
+      param["format"] = "json";
+      param["method"] = "/auth/token/create";
+      param["sign_method"] = "md5";
+      param["timestamp"] = Date.now();
 
-      const sortedParameters = Object.fromEntries(Object.entries(param).sort());
-      const parameters = Object.entries(sortedParameters)
-        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-        .join('&');
-
-
-      const signString = Object.keys(sortedParameters)
-        .map(key => `${key}=${encodeURIComponent(sortedParameters[key])}`)
-        .join('');
-
-      const finalSign = await axios.get(
-        `https://prismcodehub.com/aliexpress?md5=${signString}`
+      // Sorting the object properties by key
+      const sortedParameters: any = Object.fromEntries(
+        Object.entries(param).sort()
       );
 
-      const finalUrl = `${apiUrl}?${parameters}&sign=${finalSign.data}`;
+      let parameters = "";
+      for (const [key, value] of Object.entries(sortedParameters)) {
+        if (!parameters) {
+          parameters = `${key}=${value}`;
+        } else {
+          parameters += `&${key}=${encodeURIComponent(value as any)}`;
+        }
+      }
 
-      console.log("finalUrl", finalUrl)
-      let config = {
-        method: "post",
-        maxBodyLength: Infinity,
-        url: finalUrl,
+      let sign = parameters.replace(/&/g, "").replace(/=/g, "");
+      const signString = appSecret + sign + appSecret;
+
+      // const finalSign = await axios.get(
+      //   `https://prismcodehub.com/aliexpress?md5=${signString}`
+      // );
+
+      // console.log(finalSign, " finalSign");
+
+      // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
+      const md5Hash = md5(signString).toUpperCase();
+      const finalSign = md5Hash.toUpperCase();
+
+      const finalUrl = `https://api-sg.aliexpress.com/sync?${sortedParameters}&sign=${finalSign}`;
+
+      await axios.get(finalUrl, {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
         },
-        data: param,
-      };
+      }).then((data) => {
+        console.log("data", data)
+      });
 
-      await axios.request(config);
+      // add comment
+
+      console.log(finalUrl, "finalUrl-------------")
+
+      const result = await fetch(finalUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+          "Credentials": "true"
+        },
+      });
+
+
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {

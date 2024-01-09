@@ -112,8 +112,7 @@ const DashboardPage = () => {
           "Credentials": "true"
         },
       });
-
-
+      
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {

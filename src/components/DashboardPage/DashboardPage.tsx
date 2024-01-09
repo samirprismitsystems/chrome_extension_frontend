@@ -48,93 +48,63 @@ const DashboardPage = () => {
     try {
       setIsLoading(true);
 
-      const url = "https://api-sg.aliexpress.com/sync";
+      const apiUrl = "https://api-sg.aliexpress.com/sync";
       const appKey = "503950";
       const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
 
-      const param: any = {
+      const param = {
         app_key: appKey,
         code: token,
         format: "json",
         method: '/auth/token/create',
         sign_method: "sha256",
-        timestamp: Math.floor(Date.now() / 1000),
+        timestamp: Date.now(),
       };
 
       // Sorting the object properties by key
       const sortedParameters = Object.fromEntries(Object.entries(param).sort());
       const parameters = Object.entries(sortedParameters)
-        .map(([key, value]) => `${key}=${encodeURIComponent(value as any)}`)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
         .join('&');
 
-
-      const sign = parameters.replace(/&/g, "").replace(/=/g, "");
-      const signString = appSecret + sign + appSecret;
-
-      // Create SHA256 hash
-      const encoder = new TextEncoder();
-      const data = encoder.encode(signString);
-
-      // const crypto = window.crypto; // Handle browser compatibility
-
-      // const hashBuffer = await crypto.subtle.digest('sha256', data);
-      // const hashArray = Array.from(new Uint8Array(hashBuffer));
-      // const sha256Hash = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
-      // const finalSign = sha256Hash.toUpperCase();
+      const signString = Object.keys(sortedParameters)
+        .map(key => `${key}${sortedParameters[key]}`)
+        .join('');
 
       const finalSign = await axios.get(
         `https://prismcodehub.com/aliexpress?md5=${signString}`
       );
 
-      // console.log(finalSign, " finalSign");
+      const finalUrl = `${apiUrl}?${parameters}&sign=${finalSign.data}`;
 
-      // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
-      // const finalSign = md5Hash.toUpperCase();
+      console.log(finalUrl, "finalUrl");
 
-
-      const finalUrl = `https://api-sg.aliexpress.com/sync?${parameters}&sign=${finalSign.data}`;
-
-      console.log(finalUrl, "finalUrl")
-
-      let config: any = {
+      let config = {
         method: "post",
         maxBodyLength: Infinity,
         url: finalUrl,
-        http2: false,
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
         data: param,
       };
 
-      const a = axios
-        .request(config)
-        .then((response) => {
-          return response.data;
-        })
-        .catch((error: any) => {
-          Utils.showErrorMessage(error.message);
-        });
-
-
-      const result = await a;
+      const response = await axios.request(config);
+      const result = response.data;
       console.log(result, "----------main Data");
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {
       setIsLoading(false);
-      // window.location.reload();
     }
   };
-
 
   useEffect(() => {
     if (token && !Utils.getItem(enums.ALI_EXPRESS_TOKEN)) {
       getAccessToken(token);
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]);
+
 
   // adding comments
 

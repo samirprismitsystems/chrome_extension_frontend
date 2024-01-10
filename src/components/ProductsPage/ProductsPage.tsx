@@ -52,7 +52,7 @@ const ProductsPage = () => {
             param["app_key"] = appKey;
             param["access_token"] = Utils.getAliExpressAccessToken();
             param["format"] = "json";
-            param["method"] = "aliexpress.solution.product.list.get";
+            param["method"] = "aliexpress.ds.feedname.get";
             param["sign_method"] = "md5";
             param["timestamp"] = Date.now();
 

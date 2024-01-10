@@ -183,7 +183,7 @@ class ApiServices {
       maxBodyLength: Infinity,
       url: mainURI,
       headers: {
-        Authorization: `Bearer ${Utils.getAliExpressAccessToken()}`,
+        // Authorization: `Bearer ${Utils.getAliExpressAccessToken()}`,
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
     };

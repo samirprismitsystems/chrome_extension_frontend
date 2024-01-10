@@ -39,7 +39,7 @@ const DashboardPage = () => {
       loadData();
     }
 
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -50,7 +50,7 @@ const DashboardPage = () => {
     try {
       setIsLoading(true);
       const mainURI = "https://api-sg.aliexpress.com/sync";
-      const appKey = "503950"; 
+      const appKey = "503950";
       const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
 
       let param: any = {};
@@ -59,7 +59,6 @@ const DashboardPage = () => {
       param["format"] = "json";
       param["method"] = "/auth/token/create";
       param["sign_method"] = "md5";
-      // param["timestamp"] = new Date().getTime();
       param["timestamp"] = Date.now();
 
       // Sorting the object properties by key
@@ -67,14 +66,9 @@ const DashboardPage = () => {
         Object.entries(param).sort()
       );
 
-      const parameters = Object.entries(sortedParameters)
-        .map(([key, value]) => {
-          if (key === 'method') {
-            return `${key}=${value}`;
-          } else {
-            return `${key}=${encodeURIComponent(value as any)}`;
-          }
-        })
+      const parameters = Object.entries(sortedParameters).map(([key, value]) => {
+        return `${key}=${value as any}`;
+      })
         .join('&');
 
       let sign = parameters.replace(/&/g, "").replace(/=/g, "");
@@ -111,7 +105,7 @@ const DashboardPage = () => {
           "Credentials": "true"
         },
       });
-      
+
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {

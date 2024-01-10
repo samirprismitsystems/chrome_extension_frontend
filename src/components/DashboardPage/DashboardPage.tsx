@@ -59,7 +59,8 @@ const DashboardPage = () => {
       param["format"] = "json";
       param["method"] = "/auth/token/create";
       param["sign_method"] = "md5";
-      param["timestamp"] = new Date().getTime();
+      // param["timestamp"] = new Date().getTime();
+      param["timestamp"] = Date.now();
 
       // Sorting the object properties by key
       const sortedParameters: any = Object.fromEntries(

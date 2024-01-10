@@ -68,8 +68,7 @@ const DashboardPage = () => {
 
       const parameters = Object.entries(sortedParameters).map(([key, value]) => {
         return `${key}=${value as any}`;
-      })
-        .join('&');
+      }).join('&');
 
       let sign = parameters.replace(/&/g, "").replace(/=/g, "");
       const signString = appSecret + sign + appSecret;

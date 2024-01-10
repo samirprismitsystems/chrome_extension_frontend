@@ -1,11 +1,12 @@
 import { Box, Button, Grid, LinearProgress } from "@mui/material";
+import md5 from "md5";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
+import ApiServices from "../../services/ApiServices";
 import Utils from "../../utils/utils";
 import MenuAppBar from "../MenuAppBar/MenuAppBar";
 import ProductCard from "./Cards/ProductCard";
 import classes from "./style.module.scss";
-import ApiServices from "../../services/ApiServices";
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
 // eslint-disable @typescript-eslint/no-mixed-operators 
@@ -40,33 +41,43 @@ const ProductsPage = () => {
         return data;
     }
 
-    // const loadData = async () => {
-    //     try {
-    //         setIsDataComing(true)
-    //         const mainURI = "https://api-sg.aliexpress.com/sync";
-    //         const appKey = "503950";
-    //         const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
+    const loadData = async () => {
+        try {
+            setIsDataComing(true)
+            const defaultURI = "https://api-sg.aliexpress.com/sync";
+            const appKey = "503950";
+            const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
 
-    //         let param: any = {};
-    //         param["app_key"] = appKey;
-    //         param["code"] = token;
-    //         param["format"] = "json";
-    //         param["method"] = "/auth/token/create";
-    //         param["sign_method"] = "md5";
-    //         param["timestamp"] = new Date().getTime();
+            let param: any = {};
+            param["app_key"] = appKey;
+            // param["session"] = Utils.getAliExpressAccessToken();
+            param["format"] = "json";
+            param["method"] = "aliexpress.solution.product.list.get";
+            param["sign_method"] = "md5";
+            param["timestamp"] = Date.now();
 
-    //         // const data = await ApiServices.getSallaOrders();
-    //         setResult(data)
-    //     } catch (ex: any) {
-    //         Utils.showErrorMessage(ex.message)
-    //     } finally {
-    //         setIsDataComing(false)
-    //     }
-    // }
+            const sortedParams: any = Object.fromEntries(Object.entries(param).sort());
+            const parameters = Object.entries(sortedParams)?.map(([key, value]: any) => {
+                return `${key}=${value}`
+            }).join("&")
 
-    // useEffect(() => {
-    //     loadData();
-    // }, [])
+            const paramString = parameters.replace(/&/g, "").replace(/=/g, "")
+            const rawSignature = appSecret + paramString + appSecret;
+            const signature = md5(rawSignature.toUpperCase()).toUpperCase();
+            const mainURI = `${defaultURI}?${parameters}&sign=${signature}`;
+            const data = await ApiServices.getAliExpressProducts(mainURI);
+            console.log(data)
+            // setResult(data)s
+        } catch (ex: any) {
+            Utils.showErrorMessage(ex.message)
+        } finally {
+            setIsDataComing(false)
+        }
+    }
+
+    useEffect(() => {
+        loadData();
+    }, [])
 
     return (
         <AuthGuard>

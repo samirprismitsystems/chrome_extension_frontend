@@ -71,6 +71,7 @@ const DashboardPage = () => {
 
       let sign = parameters.replace(/&/g, "").replace(/=/g, "");
       const signString = appSecret + sign + appSecret;
+
       const md5Hash = md5(signString).toUpperCase();
       const finalSign = md5Hash.toUpperCase();
       const finalUrl = `${mainURI}?${parameters}&sign=${finalSign}`;

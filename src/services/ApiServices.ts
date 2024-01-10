@@ -150,17 +150,6 @@ class ApiServices {
     }
   };
 
-  static prismhubCatchAuthForAliExpress = async (settingID?: string): Promise<any> => {
-    try {
-      const url = `https://prismcodehub.com/aliexpress?login=12312`;
-      const res = await axios.get(url, headerContent());
-
-      return res.data;
-    } catch (error) {
-      throw error;
-    }
-  };
-
   static sallaAccountAuthorization = async (
     settingID?: string
   ): Promise<any> => {
@@ -186,6 +175,27 @@ class ApiServices {
     } catch (error) {
       throw error;
     }
+  };
+
+  static getAliExpressProducts = async (mainURI: string): Promise<any> => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: mainURI,
+      headers: {
+        Authorization: `Bearer ${Utils.getAliExpressAccessToken()}`,
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+    };
+
+    return axios
+      .request(config)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        return error.response.data.error.code;
+      });
   };
 }
 

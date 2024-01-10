@@ -50,8 +50,8 @@ const DashboardPage = () => {
     try {
       setIsLoading(true);
       const mainURI = "https://api-sg.aliexpress.com/sync";
-      const appKey = "503950"; // Replace with your actual client_id
-      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ"; // Replace with your actual client_secret
+      const appKey = "503950"; 
+      const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
 
       let param: any = {};
       param["app_key"] = appKey;

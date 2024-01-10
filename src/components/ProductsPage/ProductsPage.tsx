@@ -1,10 +1,11 @@
 import { Box, Button, Grid, LinearProgress } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
 import Utils from "../../utils/utils";
 import MenuAppBar from "../MenuAppBar/MenuAppBar";
 import ProductCard from "./Cards/ProductCard";
 import classes from "./style.module.scss";
+import ApiServices from "../../services/ApiServices";
 
 // eslint-disable-next-line react-hooks/exhaustive-deps
 // eslint-disable @typescript-eslint/no-mixed-operators 
@@ -42,7 +43,19 @@ const ProductsPage = () => {
     // const loadData = async () => {
     //     try {
     //         setIsDataComing(true)
-    //         const data = await ApiServices.getSallaOrders();
+    //         const mainURI = "https://api-sg.aliexpress.com/sync";
+    //         const appKey = "503950";
+    //         const appSecret = "nJU3gn6b9nGCl9Ohxs7jDg33ROqq3WTZ";
+
+    //         let param: any = {};
+    //         param["app_key"] = appKey;
+    //         param["code"] = token;
+    //         param["format"] = "json";
+    //         param["method"] = "/auth/token/create";
+    //         param["sign_method"] = "md5";
+    //         param["timestamp"] = new Date().getTime();
+
+    //         // const data = await ApiServices.getSallaOrders();
     //         setResult(data)
     //     } catch (ex: any) {
     //         Utils.showErrorMessage(ex.message)
@@ -71,7 +84,7 @@ const ProductsPage = () => {
                             )
                         })}
                     </Grid>
-                    {isDataComing && <LinearProgress sx={{my:2}} />}
+                    {isDataComing && <LinearProgress sx={{ my: 2 }} />}
                     {!isDisable && (
                         <Box py={3}>
                             <Button disabled={isDataComing} className={classes.loadMoreBtn} variant="contained" color="secondary" onClick={loadMoreContent}>

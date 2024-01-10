@@ -50,7 +50,7 @@ const ProductsPage = () => {
 
             let param: any = {};
             param["app_key"] = appKey;
-            // param["session"] = Utils.getAliExpressAccessToken();
+            param["access_token"] = Utils.getAliExpressAccessToken();
             param["format"] = "json";
             param["method"] = "aliexpress.solution.product.list.get";
             param["sign_method"] = "md5";

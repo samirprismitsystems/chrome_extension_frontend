@@ -60,6 +60,7 @@ const ProductsPage = () => {
             const parameters = Object.entries(sortedParams)?.map(([key, value]: any) => {
                 return `${key}=${value}`
             }).join("&")
+            // add comment
 
             const paramString = parameters.replace(/&/g, "").replace(/=/g, "")
             const rawSignature = appSecret + paramString + appSecret;

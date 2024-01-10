@@ -61,7 +61,6 @@ const DashboardPage = () => {
       param["sign_method"] = "md5";
       param["timestamp"] = Date.now();
 
-      // Sorting the object properties by key
       const sortedParameters: any = Object.fromEntries(
         Object.entries(param).sort()
       );
@@ -72,14 +71,6 @@ const DashboardPage = () => {
 
       let sign = parameters.replace(/&/g, "").replace(/=/g, "");
       const signString = appSecret + sign + appSecret;
-
-      // const finalSign = await axios.get(
-      //   `https://prismcodehub.com/aliexpress?md5=${signString}`
-      // );
-
-      // console.log(finalSign, " finalSign");
-
-      // const md5Hash = crypto.createHash("md5").update(signString).digest("hex");
       const md5Hash = md5(signString).toUpperCase();
       const finalSign = md5Hash.toUpperCase();
       const finalUrl = `${mainURI}?${parameters}&sign=${finalSign}`;
@@ -95,16 +86,6 @@ const DashboardPage = () => {
       }).finally(() => {
         window.close();
       });
-
-      // add comment
-      const result = await fetch(finalUrl, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
-          "Credentials": "true"
-        },
-      });
-
     } catch (ex: any) {
       Utils.showErrorMessage(ex.message);
     } finally {

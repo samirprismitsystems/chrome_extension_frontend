@@ -18,13 +18,24 @@ class Utils {
   }
 
   static getAliExpressTokenInfo() {
-    const info = JSON.parse(localStorage.getItem(enums.ALI_EXPRESS_TOKEN) || "{}");
+    const info = JSON.parse(
+      localStorage.getItem(enums.ALI_EXPRESS_TOKEN) || "{}"
+    );
 
     if (typeof info === "object" && Object.keys(info).length <= 0) {
       return null;
     }
 
     return info["/auth/token/create_response"];
+  }
+
+  static getAliExpressAccessToken() {
+    const info = this.getAliExpressTokenInfo();
+    if (info) {
+      return info.access_token;
+    }
+
+    return null;
   }
 
   static removeItem(key: string) {

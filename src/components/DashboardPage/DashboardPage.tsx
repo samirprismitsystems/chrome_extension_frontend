@@ -39,13 +39,14 @@ const DashboardPage = () => {
       loadData();
     }
 
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const url = new URL(window.location.href);
   const token = url.searchParams.get("code");
 
-  const getAccessToken = async (token: string) => {
+  const generateAccessToken = async (token: string) => {
     try {
       setIsLoading(true);
       const mainURI = "https://api-sg.aliexpress.com/sync";
@@ -102,9 +103,6 @@ const DashboardPage = () => {
       });
 
       // add comment
-
-      console.log(finalUrl, "finalUrl-------------")
-
       const result = await fetch(finalUrl, {
         method: "GET",
         headers: {
@@ -120,11 +118,9 @@ const DashboardPage = () => {
     }
   };
 
-  console.log(Utils.getAliExpressTokenInfo(), "----")
-
   useEffect(() => {
     if (token && !Utils.getItem(enums.ALI_EXPRESS_TOKEN)) {
-      getAccessToken(token);
+      generateAccessToken(token);
     }
   }, [token]);
 

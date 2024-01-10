@@ -63,7 +63,8 @@ const ProductsPage = () => {
 
             const paramString = parameters.replace(/&/g, "").replace(/=/g, "")
             const rawSignature = appSecret + paramString + appSecret;
-            const signature = md5(rawSignature.toUpperCase()).toUpperCase();
+            const md5Signature = md5(rawSignature).toUpperCase();
+            const signature = md5Signature.toUpperCase();
             const mainURI = `${defaultURI}?${parameters}&sign=${signature}`;
             const data = await ApiServices.getAliExpressProducts(mainURI);
             console.log(data)

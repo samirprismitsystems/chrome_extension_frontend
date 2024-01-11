@@ -7,3 +7,34 @@
   display: block !important;
   margin: auto !important;
 }
+
+.productPageHR {
+  border: rgb(11, 11, 11) solid 1px;
+  margin: 12px 0px;
+}
+
+.activeProductFeedName {
+  color: black;
+  font-weight: 600;
+}
+
+.productFeedName {
+  color: black;
+}
+
+.activeButtonFeedName {
+  border: #ed141494 solid 1px;
+  border-radius: 4px;
+  background-color: #ed14140f;
+  :hover {
+    background-color: #ed14140f;
+  }
+
+  button {
+    border: #ed141494 solid 1px;
+    background-color: #ed14140f;
+    :hover {
+      background-color: transparent !important;
+    }
+  }
+}

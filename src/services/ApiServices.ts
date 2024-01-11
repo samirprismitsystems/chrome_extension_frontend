@@ -177,13 +177,32 @@ class ApiServices {
     }
   };
 
+  static getAliExpressFeedList = async (mainURI: string): Promise<any> => {
+    let config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: mainURI,
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+      },
+    };
+
+    return axios
+      .request(config)
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        return error.response.data.error.code;
+      });
+  };
+  
   static getAliExpressProducts = async (mainURI: string): Promise<any> => {
     let config = {
       method: "get",
       maxBodyLength: Infinity,
       url: mainURI,
       headers: {
-        // Authorization: `Bearer ${Utils.getAliExpressAccessToken()}`,
         "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
       },
     };

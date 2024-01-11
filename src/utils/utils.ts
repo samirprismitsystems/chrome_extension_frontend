@@ -114,6 +114,18 @@ class Utils {
       currency: currencyCode,
     });
   }
+
+  static prettyPrice(salePrice: any, currency: string) {
+    const price = parseFloat(salePrice);
+
+    const formatter = new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: currency,
+    });
+
+    const formattedCurrency = formatter.format(price);
+    if (formattedCurrency) return formattedCurrency;
+  }
 }
 
 export default Utils;

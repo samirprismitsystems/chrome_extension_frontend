@@ -1,7 +1,6 @@
 import { Chip } from "@mui/material";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
-import DataTable from "../../common/DataTable/DataTable";
 import { enums } from "../../enum";
 import ApiServices from "../../services/ApiServices";
 import Utils from "../../utils/utils";
@@ -38,10 +37,13 @@ const OrdersPage = () => {
         }
     }
 
+
+    console.log(result, "---result")
+
     return (
         <AuthGuard>
             <MenuAppBar>
-                <DataTable
+                {/* <DataTable
                     title={"Salla Orders"}
                     data={(result && result.data) || []}
                     columns={[
@@ -101,7 +103,9 @@ const OrdersPage = () => {
                         },
                     ]}
                     isLoading={isLoading}
-                />
+                /> */}
+                <h2>Order's Page</h2>
+                <span>Lorem ipsum, dolor sit amet consectetur adipisicing elit. At hic quod pariatur, quam facere eligendi ipsam iure esse suscipit, expedita qui recusandae dignissimos omnis nihil et nesciunt? Doloremque, commodi dignissimos!</span>
             </MenuAppBar>
         </AuthGuard>
     );

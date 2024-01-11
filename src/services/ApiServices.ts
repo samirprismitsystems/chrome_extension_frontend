@@ -135,7 +135,7 @@ class ApiServices {
         return response.data;
       })
       .catch((error) => {
-        return error.response.data.error.code;
+        throw error;
       });
   };
 

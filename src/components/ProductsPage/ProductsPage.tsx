@@ -4,7 +4,6 @@ import { Alert, Box, Button, Grid, LinearProgress, Pagination, PaginationItem, S
 import md5 from "md5";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
-import PageLoading from "../../common/PageLoading";
 import ApiServices from "../../services/ApiServices";
 import { IProducts } from "../../types/products";
 import Utils from "../../utils/utils";
@@ -134,68 +133,73 @@ const ProductsPage = () => {
         getFeedList();
     }, [])
 
+
     return (
         <AuthGuard>
             <MenuAppBar>
                 {(isLoading && !feedList) ? (
-                    <PageLoading />
+                    <LinearProgress />
                 ) : (
-                    <Box sx={{
-                        minHeight: "85vh",
-                        height: "100%",
-                    }}>
-                        <Box gap={1} sx={{ display: "flex", justifyContent: "left", alignItems: "center", flexWrap: "wrap" }}>
-                            {feedList && feedList.map((item, index) => (
-                                <Box key={index} className={selectedIndex === index ? classes.activeButtonFeedName : ""}>
-                                    <Button onClick={() => {
-                                        setActiveSlug(item.promo_name)
-                                        setSelectedIndex(index)
-                                    }} variant="outlined">
-                                        <span className={`${selectedIndex === index ? classes.activeProductFeedName : classes.productFeedName}`}>{item.promo_name}</span>
-                                    </Button>
-                                </Box>
-                            ))}
-                        </Box>
-                        <hr className={classes.productPageHR} />
-                        {isProductLoading && <LinearProgress sx={{ my: 2 }} />}
-                        {(!isProductLoading && (productList && productList.products && productList.products.traffic_product_d_t_o.length >= 0)) && (
-                            <>
-                                <Grid container spacing={2} justifyContent={'normal'}>
-                                    {productList.products.traffic_product_d_t_o.map((item, index) => {
-                                        return (
-                                            <Grid key={item.product_id} item className={classes.gridItem} xs={12} sm={6} md={6} lg={4} xl={3}>
-                                                <ProductCard salePrice={item.sale_price} currency={item.sale_price_currency} discount={item.discount} product_main_image_url={item.product_main_image_url} product_title={item.product_title} second_level_category_name={item.second_level_category_name} />
-                                            </Grid>
-                                        )
-                                    })}
-                                </Grid>
-                                <Stack spacing={2}>
-                                    <Box sx={{
-                                        display: 'flex',
-                                        justifyContent: "center",
-                                        padding: "36px 0px"
-                                    }}>
-                                        <Pagination
-                                            boundaryCount={10}
-                                            onChange={(e: any, page: number) => {
-                                                getProductRelatedToFeed(page);
-                                            }}
-                                            defaultPage={pageNumber || 1}
-                                            count={Math.ceil(productList.total_record_count / perPageItem).toLocaleString() as any}
-                                            renderItem={(item) => (
-                                                <PaginationItem
-                                                    slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
-                                                    {...item}
-                                                />
-                                            )}
-                                            color="primary"
-                                        />
+                    feedList && feedList.length > 0 ? (
+                        <Box sx={{
+                            minHeight: "85vh",
+                            height: "100%",
+                        }}>
+                            <Box gap={1} sx={{ display: "flex", justifyContent: "left", alignItems: "center", flexWrap: "wrap" }}>
+                                {feedList && feedList.map((item, index) => (
+                                    <Box key={index} className={selectedIndex === index ? classes.activeButtonFeedName : ""}>
+                                        <Button onClick={() => {
+                                            setActiveSlug(item.promo_name)
+                                            setSelectedIndex(index)
+                                        }} variant="outlined">
+                                            <span className={`${selectedIndex === index ? classes.activeProductFeedName : classes.productFeedName}`}>{item.promo_name}</span>
+                                        </Button>
                                     </Box>
-                                </Stack>
-                            </>
-                        )}
-                        {((!productList || !productList.products) && (productList && productList.products.traffic_product_d_t_o.length <= 0)) && <Alert severity="error">We're Experiencing Product Availability Issues. Please Try Again Later.</Alert>}
-                    </Box>
+                                ))}
+                            </Box>
+                            <hr className={classes.productPageHR} />
+                            {isProductLoading && <LinearProgress sx={{ my: 2 }} />}
+                            {(!isProductLoading && (productList && productList.products && productList.products.traffic_product_d_t_o.length >= 0)) && (
+                                <>
+                                    <Grid container spacing={2} justifyContent={'normal'}>
+                                        {productList.products.traffic_product_d_t_o.map((item, index) => {
+                                            return (
+                                                <Grid key={item.product_id} item className={classes.gridItem} xs={12} sm={6} md={6} lg={4} xl={3}>
+                                                    <ProductCard salePrice={item.sale_price} currency={item.sale_price_currency} discount={item.discount} product_main_image_url={item.product_main_image_url} product_title={item.product_title} second_level_category_name={item.second_level_category_name} />
+                                                </Grid>
+                                            )
+                                        })}
+                                    </Grid>
+                                    <Stack spacing={2}>
+                                        <Box sx={{
+                                            display: 'flex',
+                                            justifyContent: "center",
+                                            padding: "36px 0px"
+                                        }}>
+                                            <Pagination
+                                                boundaryCount={10}
+                                                onChange={(e: any, page: number) => {
+                                                    getProductRelatedToFeed(page);
+                                                }}
+                                                defaultPage={pageNumber || 1}
+                                                count={Math.ceil(productList.total_record_count / perPageItem).toLocaleString() as any}
+                                                renderItem={(item) => (
+                                                    <PaginationItem
+                                                        slots={{ previous: ArrowBackIcon, next: ArrowForwardIcon }}
+                                                        {...item}
+                                                    />
+                                                )}
+                                                color="primary"
+                                            />
+                                        </Box>
+                                    </Stack>
+                                </>
+                            )}
+                            {((!productList || !productList.products) && (productList && productList.products.traffic_product_d_t_o.length <= 0)) && <Alert severity="error">We're Experiencing Product Availability Issues. Please Try Again Later.</Alert>}
+                        </Box>
+                    ) : (
+                        <Alert severity="error">Oops! Something Went Wrong. Please Try Again Later.</Alert>
+                    )
                 )}
             </MenuAppBar>
         </AuthGuard>

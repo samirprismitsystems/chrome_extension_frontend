@@ -1,6 +1,6 @@
+import { Alert, LinearProgress } from "@mui/material";
 import { useEffect, useState } from "react";
 import AuthGuard from "../../authGuard/AuthGuard";
-import PageLoading from "../../common/PageLoading";
 import ApiServices from "../../services/ApiServices";
 import { IOrderList } from "../../types/orders";
 import Utils from "../../utils/utils";
@@ -31,14 +31,16 @@ const OrdersPage = () => {
         loadData();
     }, [])
 
-
     return (
         <AuthGuard>
             <MenuAppBar>
-                {(isLoading || !result) ? (
-                    <PageLoading />
-                ) : (
-                    <OrderList data={result && result.data} />
+                {isLoading && <LinearProgress sx={{ my: 2 }} />}
+                {!isLoading && typeof result !== 'string' && (result && result.data) && (
+                    <OrderList data={result.data} />
+                )}
+
+                {!isLoading && (!result || result && result.data.length <= 0) && (
+                    <Alert severity="error">Oops! Something Went Wrong. Please Try Again Later.</Alert>
                 )}
             </MenuAppBar>
         </AuthGuard>

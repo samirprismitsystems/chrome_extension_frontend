@@ -36,6 +36,9 @@ export default function OrderList({ data }: { data: IOrderItem[] }) {
         }
     }
     
+
+    if(!data) return null;
+    
     return (
         <Paper>
             <TableContainer>

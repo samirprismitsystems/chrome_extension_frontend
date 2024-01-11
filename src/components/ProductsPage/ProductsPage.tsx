@@ -134,7 +134,6 @@ const ProductsPage = () => {
         getFeedList();
     }, [])
 
-
     return (
         <AuthGuard>
             <MenuAppBar>

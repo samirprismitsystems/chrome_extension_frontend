@@ -108,7 +108,7 @@ const DashboardPage = () => {
     <AuthGuard>
       <MenuAppBar>
         <Typography variant="body1">
-          <h2>Main Dashboard</h2>
+          Main Dashboard
         </Typography>
       </MenuAppBar>
     </AuthGuard>
